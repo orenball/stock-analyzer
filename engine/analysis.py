@@ -230,7 +230,8 @@ def analyze(ticker: str, with_news: bool = True) -> Analysis:
     R = a.reasons.append
     a.meta = {k: info.get(k) for k in ("sector", "industry", "marketCap", "trailingPE", "forwardPE",
                                        "targetMeanPrice", "targetHighPrice", "targetLowPrice",
-                                       "numberOfAnalystOpinions", "dividendYield", "beta")}
+                                       "numberOfAnalystOpinions", "dividendYield", "beta",
+                                       "trailingPegRatio", "pegRatio")}
 
     # --- Technical trend & momentum
     sma50, sma200 = close.rolling(50).mean(), close.rolling(200).mean()
