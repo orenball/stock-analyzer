@@ -18,7 +18,7 @@ sys.path.insert(0, str(ENGINE))
 
 from analysis import analyze  # noqa: E402
 from plans import holding_plan, long_plan, short_plan  # noqa: E402
-from timing import price_check, take_profit_times  # noqa: E402
+from timing import flag_earnings, next_earnings, price_check, take_profit_times  # noqa: E402
 
 CATEGORIES = ("Technical", "Candles", "Fundamental", "Analysts", "News")
 
@@ -124,6 +124,8 @@ def main():
         plans["holding"] = out["position"]["plan"]
     out["take_profit_timing"] = take_profit_times(a, plans)
     out["price_check"] = price_check(a)
+    out["earnings"] = next_earnings(ticker)
+    flag_earnings(plans, out["earnings"])
     print(json.dumps(clean(out), indent=2, default=str))
 
 

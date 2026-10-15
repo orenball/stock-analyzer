@@ -6,7 +6,7 @@ Type `/analyze NVDA` in Claude Code and get a full research report on any stock 
 2. **Is this a good price?** Value (is the business cheap or expensive) and timing (is today a good moment, or has it run up), with a calmer entry level when it's stretched
 3. **Snapshot**: price, valuation, 52-week range, volatility, worst drop in the last year
 4. **Why**: every signal that moved the score, grouped into technical, candlestick, fundamental, analyst and news reasons, each with its points
-5. **Trade levels**: entry, stop-loss and target for a short trade (days to weeks) and a long hold (months), with the **expected time to reach each target** and the chance of hitting it before the stop
+5. **Trade levels**: entry, stop-loss and target for a short trade (days to weeks) and a long hold (months), with the **expected time to reach each target**, the chance of hitting it before the stop, and a warning when earnings come first
 6. **News**: last week's headlines, marked positive or negative
 7. **Risks**: what would flip the call
 
@@ -89,6 +89,10 @@ For each target, the engine builds 3,000 simulated two-year price paths by reshu
 - the **chance it's reached before the stop**.
 
 These are odds based on how the stock has moved, not a forecast. Earnings, news or a market crash can change them quickly.
+
+### Earnings warning
+
+The report shows the next earnings date from Yahoo Finance. A ⚠️ appears when earnings are less than a week away, and on any target whose typical time runs past the earnings report, because a single earnings day can move the stock more than weeks of normal trading.
 
 ## Files
 

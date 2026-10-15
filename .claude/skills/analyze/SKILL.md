@@ -26,6 +26,7 @@ Runs the rule-based engine in `engine/` on one ticker and turns the result into 
 - **Horizon:** `horizon` (skip if "—").
 - One sentence on *why*: the two or three reasons with the largest points, positive or negative.
 - If `held` is true: say the user owns it, give `position.pl_pct` as a percent, and make clear the call is a stay/exit signal, not a buy signal.
+- **Earnings:** if `earnings` is not null, add "Next earnings: `earnings.date` (in `earnings.days` days)". If `earnings.within_week` is true, start this line with ⚠️ and add that the stock can move sharply in either direction on the report, so a new position now carries extra risk. If `earnings` is null, say the next earnings date wasn't available.
 
 ### 2. Is this a good price?
 From `price_check`:
@@ -47,6 +48,7 @@ One table per category that has reasons, in this order: Technical, Candles, Fund
   - **Typical time:** `typical`, with the middle range `range_text` (half of the simulated runs that hit the target got there within that range).
   - **Chance of reaching it before the stop:** `p_target_first` as a percent.
   - If `typical` is null: "Rarely reached before the stop in simulations; no reliable time estimate."
+  - If `earnings_first` is true, mark that target with ⚠️ and note that the earnings report comes before its typical time, so the estimate is less reliable (the simulation can't predict an earnings jump or drop).
 - After the table, one line on the method: estimates come from `take_profit_timing.method`; say the trend used was `annual_drift_used` per year. Add: "These are rough odds from the stock's own history, not a forecast; earnings, news or a market drop can change them fast."
 - If a typical time is much longer than the plan's `hold` period, point that out (the target may not fit that holding style).
 
@@ -54,7 +56,7 @@ One table per category that has reasons, in this order: Technical, Candles, Fund
 Up to 8 items from `headlines`: 🟢/🔴/⚪ for sentiment, title as a link, source. If empty, say no recent headlines were found.
 
 ### 7. Risks and what would change the call
-Three or four bullets built from the negative reasons and the levels: which price breaks the stop, which signals flipping would push the score across 5 or 0. Flag clearly: leveraged ETFs, unprofitable companies, high volatility, thin analyst coverage.
+Three or four bullets built from the negative reasons and the levels: which price breaks the stop, which signals flipping would push the score across 5 or 0. Flag clearly: leveraged ETFs, unprofitable companies, high volatility, thin analyst coverage, and an earnings report within the next month.
 
 ### 8. Footer
 One line: "Rule-based signals from price data, fundamentals, analyst data and headline keywords. Not financial advice; do your own research before you trade." Nothing after it.

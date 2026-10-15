@@ -147,3 +147,49 @@ def price_check(a):
                   "why": "the 50-day average, where pullbacks in an uptrend often find buyers"}
     return {"label": label, "value_points": v, "timing_points": t,
             "value": value, "timing": timing, "better_entry": better}
+
+
+def next_earnings(ticker):
+    """Next scheduled earnings date from Yahoo, or None. Never fails the report."""
+    from datetime import date, datetime
+
+    import yfinance as yf
+    try:
+        cal = yf.Ticker(ticker).calendar
+    except Exception:
+        return None
+    raw = None
+    if isinstance(cal, dict):
+        raw = cal.get("Earnings Date")
+    elif cal is not None and hasattr(cal, "loc"):  # older yfinance returned a DataFrame
+        try:
+            raw = list(cal.loc["Earnings Date"])
+        except Exception:
+            raw = None
+    if raw is None:
+        return None
+    dates = raw if isinstance(raw, (list, tuple)) else [raw]
+    today = date.today()
+    upcoming = []
+    for d in dates:
+        if isinstance(d, datetime):
+            d = d.date()
+        if isinstance(d, date) and d >= today:
+            upcoming.append(d)
+    if not upcoming:
+        return None
+    d = min(upcoming)
+    days = (d - today).days
+    return {"date": d.isoformat(), "days": days, "trading_days": round(days * 5 / 7),
+            "within_week": days <= 7, "within_month": days <= 30}
+
+
+def flag_earnings(plans, earnings):
+    """Mark every target whose typical time to reach it runs past the next earnings report."""
+    if not earnings:
+        return
+    for plan in plans.values():
+        for key, t in list(plan.items()):
+            if key.endswith("_time") and isinstance(t, dict):
+                med = t.get("median_days")
+                t["earnings_first"] = bool(med is not None and earnings["trading_days"] < med)
