@@ -1,0 +1,6 @@
+{
+  "positions": [
+    { "ticker": "AAPL", "shares": 10, "cost": 190.50 },
+    { "ticker": "MSFT", "shares": 5, "cost": 410.00 }
+  ]
+}

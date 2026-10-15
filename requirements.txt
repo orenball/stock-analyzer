@@ -1,0 +1,4 @@
+certifi>=2024.2.2
+numpy>=2.0
+pandas>=2.2
+yfinance>=0.2.50
